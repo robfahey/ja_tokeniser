@@ -9,10 +9,17 @@ You need to have MeCab installed, and to use the neologism dictionary (the defau
 
 ### Usage
 
-Import the object: `from tokeniser import Tokeniser`
+Import the object: 
+
+```python
+from tokeniser import Tokeniser
+```
 
 Initialise it with your chosen options: 
-`tokeniser = Tokeniser(keywords=['keyword1', 'keyword2'], dictionary='neologd|default', japanese_only=True)`
+
+```python
+tokeniser = Tokeniser(keywords=['keyword1', 'keyword2'], dictionary='neologd|default', japanese_only=True)
+```
 
 *keywords* are terms which must appear in the tweet, or it will be marked as irrelevant (though it'll still be tokenised). This functionality is useful if you've downloaded Twitter data from somewhere like Crimson Hexagon, which makes a spectacular mess of Japanese language keyword searches and can return a lot of invalid results.
 
