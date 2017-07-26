@@ -2,14 +2,15 @@ import MeCab, re
 import signal
 
 # Create a Tokenise object as such:
-#       tokeniser = Tokenise(keywords=['keyword1', 'keyword2'], dictionary='neologd')
+#       tokeniser = Tokenise(keywords=['keyword1', 'keyword2'], dictionary='neologd', japanese_only=True)
 
 class Tokeniser(object):
-    def __init__(self, keywords=None, dictionary='default'):
+    def __init__(self, keywords=None, dictionary='default', japanese_only=True):
         self._KAOFINDER = make_kaofinder()
         self._BRACKETFINDER = make_bracketfinder()
         self._EMOJIFINDER = make_emojifinder()
         self._URLFINDER = make_urlfinder()
+        self._japanese_only = japanese_only
         self._re_text = '[0-9A-Za-zぁ-ヶ一-龠]'
         if dictionary == 'neologd':
             self._dictionary = 'neologd'
@@ -122,6 +123,10 @@ class Tokeniser(object):
             if len(self._find_keywords(tweet)) == 0:
                 tweet_features['exclude'] = True
 
+        if self._japanese_only:
+            if re.search(r'(?:[ぁ-ヶ一-龠]+)', tweet) is None:
+                tweet_features['exclude'] = True
+
         if re.match(r"RT\s@[a-z0-9_]+", tweet) is not None:
             tweet_features['is_rt'] = True
             tweet_features['rt_account'] = re.search(r'@([a-z0-9_]+)', tweet).group()
@@ -136,6 +141,10 @@ class Tokeniser(object):
         temp_content = tweet
         temp_tags = []
 
+        if self._japanese_only:
+            if re.search(r'(?:[ぁ-ヶ一-龠]+)', tweet) is None:
+                return 'NON_JAPANESE'
+
         for an_emoji in self._find_emoji(temp_content):
             temp_tags.append((an_emoji, 'EMOJI'))
             temp_content = temp_content.replace(an_emoji, ' ')
@@ -145,7 +154,7 @@ class Tokeniser(object):
         for a_hashtag in re.findall("#([a-z0-9ぁ-ヶ一-龠_]+)", temp_content, re.I):
             temp_tags.append(('#' + a_hashtag, 'HASHTAG'))
             temp_content = temp_content.replace('#' + a_hashtag, ' ')
-        with timeout(10, error_message='Fucked up on: {}'.format(temp_content)):
+        with timeout(10, error_message='Timed out on: {}'.format(temp_content)):
             for a_url in self._URLFINDER.findall(temp_content):
                 temp_tags.append((a_url[0], 'URL'))
                 temp_content = temp_content.replace(a_url[0], ' ')
