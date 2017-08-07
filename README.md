@@ -5,7 +5,9 @@ This is a simple Python object which encapsulates the various pre-processing and
 
 ### Requirements
 
-You need to have MeCab installed, and to use the neologism dictionary (the default dictionary for this Tokeniser), you'll need that installed too. You can find installation instructions for MacOS and Ubuntu in [this blog post](http://www.robfahey.co.uk/blog/japanese-text-analysis-in-python/).
+You need to have MeCab installed, and to use the neologism dictionary (the default dictionary for this Tokeniser), you'll need that installed too. You can find installation instructions for MacOS and Ubuntu in [this blog post](http://www.robfahey.co.uk/blog/japanese-text-analysis-in-python/). The system also relies on the *mecab-python3* library which can be installed via _pip_. 
+
+At some point I'll try to get around to making this into a proper Python package; in the meanwhile, just drop the files into your project directory.
 
 ### Usage
 
