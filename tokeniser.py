@@ -127,10 +127,10 @@ class Tokeniser(object):
             if re.search(r'(?:[ぁ-ヶ一-龠]+)', tweet) is None:
                 tweet_features['exclude'] = True
 
-        if re.match(r"RT\s@[a-z0-9_]+", tweet) is not None:
+        if re.match(r"RT\s@[A-z0-9_]+", tweet) is not None:
             tweet_features['is_rt'] = True
-            tweet_features['rt_account'] = re.search(r'@([a-z0-9_]+)', tweet).group()
-        if re.match(r"@([a-z0-9_]+)", tweet) is not None:
+            tweet_features['rt_account'] = re.search(r'@([A-z0-9_]+)', tweet).group()
+        elif re.match(r"@([A-z0-9_]+)", tweet) is not None:
             tweet_features['is_reply'] = True
 
         return tweet_features
