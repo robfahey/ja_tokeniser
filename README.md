@@ -20,7 +20,7 @@ from tokeniser import Tokeniser
 Initialise it with your chosen options: 
 
 ```python
-tokeniser = Tokeniser(keywords=['keyword1', 'keyword2'], dictionary='neologd|default', japanese_only=True)
+tokeniser = Tokeniser(keywords=['keyword1', 'keyword2'], dictionary='neologd|default', japanese_only=True, lemmatize=True)
 ```
 
 *keywords* are terms which must appear in the tweet, or it will be marked as irrelevant (though it'll still be tokenised). This functionality is useful if you've downloaded Twitter data from somewhere like Crimson Hexagon, which makes a spectacular mess of Japanese language keyword searches and can return a lot of invalid results.
@@ -28,6 +28,8 @@ tokeniser = Tokeniser(keywords=['keyword1', 'keyword2'], dictionary='neologd|def
 *dictionary* is a choice of which MeCab dictionary to use. The default is the ordinary MeCab dictionary; at present the only other option is to set this to 'neologd'. This will use the *mecab-ipadic-neologd* neologism dictionary, which is generally very good for handling social media data. Setting this value to anything else will fall back to the default MeCab dictionary. Note that the code presently assumes that the neologism dictionary is installed in */usr/local/lib/mecab/dic/mecab-ipadic-neologd* - if you have installed it elsewhere, you can edit line 63 of the code to fix this.
 
 *japanese_only* enables a function which will exclude and ignore tweets that contain no Japanese language characters (hiragana, katakana, kanji).
+
+*lemmatize* is an option which sets whether verbs, adjectives etc. should be returned to their dictionary form, such that they will return the same token regardless of tense or other declination. (Defaults to true.)
 
 The object is now ready to start processing tweets. There are two functions available to you: `Tokenise.return_features(text)` and `Tokenise.return_tokens(text)`
 
